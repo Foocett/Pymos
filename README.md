@@ -1,2 +1,3 @@
 # Pymos
- A Desmos-like program that I am creating out of pure spite for the TI-84
+ Pymos is a Desmos-like program that I am creating out of pure spite for the TI-84
+...
