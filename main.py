@@ -1,7 +1,7 @@
 import sys
 import numpy as np
 import matplotlib.pyplot as plt
-
+import re
 from PyQt6.QtWidgets import QApplication, QMainWindow, QLabel, QLineEdit, QPushButton, QVBoxLayout, QWidget
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.figure import Figure
@@ -38,6 +38,13 @@ class GraphingApp(QMainWindow):
 
     def plot_graph(self):
         equation = self.equation_entry.text()
+        print_equation = equation
+        # Replace '^' with '**'
+        equation = equation.replace('^', '**')
+        # Add '*' where necessary before 'x'
+        equation = re.sub(r'(\d+)([a-zA-Z])', r'\1*\2', equation)
+
+        # Add '*' where necessary before 'x'
         x = np.linspace(-10, 10, 400)
         try:
             y = eval(equation)
@@ -48,8 +55,11 @@ class GraphingApp(QMainWindow):
             ax.set_ylim(-10, 10)
             ax.set_xlabel("x")
             ax.set_ylabel("y")
-            ax.set_title("Graph of " + equation)
+            ax.set_title("Graph of " + print_equation)
             ax.set_aspect('equal', adjustable='box')
+            # Draw x-axis and y-axis lines
+            ax.axhline(0, color='black', linewidth=0.5)
+            ax.axvline(0, color='black', linewidth=0.5)
             self.canvas.draw()
         except Exception as e:
             print("Error:", e)
